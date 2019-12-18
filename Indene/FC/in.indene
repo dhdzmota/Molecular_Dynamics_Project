@@ -1,0 +1,29 @@
+# REAX potential for Nitroamines system
+# .....
+
+dimension      3
+boundary       p p p
+units		real
+
+atom_style	charge
+read_data	data.FC
+
+replicate 4 4 4
+
+pair_style	reax/c NULL
+pair_coeff	* * ffield.reax.FC C H Cl
+
+neighbor	2.0 bin
+neigh_modify	every 10 delay 0 check no
+
+fix             2 all qeq/reax 1 0.0 10.0 1e-6 reax/c
+fix		     1 all npt temp 300.0 300.0 100.0*$dt iso 1.0 1.0 1000.0*$dt
+
+timestep        0.001
+
+thermo_style    custom step temp epair etotal press 
+thermo          1
+
+#dump            4 all xyz 5000 dumpnpt.xyz
+
+run             10000
