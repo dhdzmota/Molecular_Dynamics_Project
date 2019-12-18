@@ -21,9 +21,9 @@ fix		     1 all npt temp 300.0 300.0 $(100.0*dt) iso 1.0 1.0 $(1000.0*dt)
 
 timestep        0.001
 
-thermo_style    custom step temp epair etotal press 
+thermo_style    custom step time temp epair pe ke etotal ebond press vol density 
 thermo          1
 
-#dump            4 all xyz 5000 dumpnpt.xyz
+dump            3 all xyz 500 dumpnpt.xyz
 
 run             10000
