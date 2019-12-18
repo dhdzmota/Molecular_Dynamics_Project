@@ -1,0 +1,98 @@
+LAMMPS (19 Sep 2019)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:93)
+  using 1 OpenMP thread(s) per MPI task
+# REAX potential for Nitroamines system
+# .....
+
+dimension      3
+boundary       p p p
+units		real
+
+atom_style	charge
+read_data	indene_tridichlorobenzene.data
+  orthogonal box = (-6.37931 -4.19611 -10.7845) to (6.5753 4.22201 10.6816)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  161 atoms
+  read_data CPU = 0.0136761 secs
+
+replicate 3 3 3
+  orthogonal box = (-6.37931 -4.19611 -10.7845) to (32.4845 21.0582 53.6137)
+  1 by 1 by 1 MPI processor grid
+  4347 atoms
+  replicate CPU = 0.0100527 secs
+
+pair_style	reax/c NULL
+pair_coeff	* * ffield.reax.FC C H Cl
+Reading potential file ffield.reax.FC with DATE: 2013-06-28
+WARNING: Changed valency_val to valency_boc for X (../reaxc_ffield.cpp:315)
+
+neighbor	2.0 bin
+neigh_modify	every 10 delay 0 check no
+
+fix             2 all qeq/reax 1 0.0 10.0 1e-6 reax/c
+fix		     1 all npt temp 300.0 300.0 $(100.0*dt) iso 1.0 1.0 $(1000.0*dt)
+fix		     1 all npt temp 300.0 300.0 100 iso 1.0 1.0 $(1000.0*dt)
+fix		     1 all npt temp 300.0 300.0 100 iso 1.0 1.0 1000
+
+timestep        0.001
+
+thermo_style    custom step temp epair etotal press
+thermo          1
+
+#dump            4 all xyz 5000 dumpnpt.xyz
+
+run             10000
+Neighbor list info ...
+  update every 10 steps, delay 0 steps, check no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12
+  ghost atom cutoff = 12
+  binsize = 6, bins = 7 5 11
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair reax/c, perpetual
+      attributes: half, newton off, ghost
+      pair build: half/bin/newtoff/ghost
+      stencil: half/ghost/bin/3d/newtoff
+      bin: standard
+  (2) fix qeq/reax, perpetual, copy from (1)
+      attributes: half, newton off, ghost
+      pair build: copy
+      stencil: none
+      bin: none
+Per MPI rank memory allocation (min/avg/max) = 525.4 | 525.4 | 525.4 Mbytes
+Step Temp E_pair TotEng Press 
+       0            0    5373839.2    5373839.2    2727659.5 
+       1   0.24806702      5373836    5373839.2    2727661.9 
+       2   0.99226698    5373826.3    5373839.2    2727669.1 
+       3    2.2325965    5373810.2    5373839.2      2727681 
+       4      3.96905    5373787.7    5373839.1    2727697.6 
+       5    6.2016197    5373758.8    5373839.1      2727719 
+       6    8.9302954    5373723.4    5373839.1    2727745.2 
+       7    12.155065    5373681.6      5373839    2727776.1 
+       8    15.875914    5373633.3    5373838.9      2727811 
+       9    20.092825    5373578.6    5373838.9    2727851.4 
+      10    24.805779    5373517.5    5373838.8    2727896.6 
+      11    30.014756    5373449.9    5373838.7    2727946.6 
+      12    35.719731    5373375.9    5373838.6    2728001.3 
+      13    41.920679    5373295.5    5373838.5    2728060.8 
+      14    48.617572    5373208.6    5373838.4      2728125 
+      15     55.81038    5373115.3    5373838.3      2728194 
+      16     63.49907    5373015.6    5373838.2    2728267.7 
+      17    71.683608    5372909.5    5373838.1    2728346.2 
+      18    80.363956    5372796.9      5373838    2728429.4 
+      19    89.540076    5372677.9    5373837.8    2728517.4 
+      20    99.211926    5372552.5    5373837.7    2728610.1 
+      21    109.37946    5372420.6    5373837.6    2728707.7 
+      22    120.04264    5372282.3    5373837.4    2728809.9 
+      23    131.20141    5372137.6    5373837.2    2728916.9 
+      24    142.85572    5371986.4    5373837.1    2729028.6 
+      25    155.00552    5371828.8    5373836.9    2729145.2 
+      26    167.65076    5371664.8    5373836.7    2729266.3 
+      27    180.79137    5371494.4    5373836.5    2729392.4 
+      28     194.4273    5371317.6    5373836.3    2729523.1 
+      29    208.55849    5371134.3    5373836.1    2729658.6 
+      30    223.18487    5370944.6    5373835.9    2729798.8 
+      31    238.30638    5370748.5    5373835.6    2729943.8 
+      32    253.92295    5370545.9    5373835.4    2730093.5 
+      33     270.0345      5370337    5373835
