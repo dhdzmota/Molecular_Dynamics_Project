@@ -21,13 +21,13 @@ neigh_modify	every 10 delay 0 check no
 velocity	all create 300.0 4928459
 
 fix             2 all qeq/reax 1 0.0 10.0 1e-6 reax/c
-fix		     1 all npt temp 300.0 300.0 $(20.0*dt) iso 1.0 1.0 $(500.0*dt)
+fix		     1 all npt temp 300.0 300.0 $(100.0*dt) iso 1.0 1.0 $(1000.0*dt)
 
 timestep        0.01
 
 thermo_style    custom step time temp pe ke etotal press vol density 
 thermo          1
 
-dump            3 all xyz 500 ./Results/dumpnpt8.xyz
+dump            3 all xyz 500 ./Results/dumpnpt9.xyz
 
 run             50000
